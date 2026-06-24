@@ -8,24 +8,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import net.mirjalal.kogeneesti.model.dto.QuestionDto;
+import net.mirjalal.kogeneesti.model.dto.question.QuestionGetResponseDto;
 import net.mirjalal.kogeneesti.service.QuestionService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/question")
+@RequestMapping("/api/questions")
 public class QuestionController {
 
     private final QuestionService questionService;
 
-    @GetMapping("/generate")
-    public ResponseEntity<QuestionDto> generateQuestion(@RequestParam BigInteger dictionaryId) {
-        return ResponseEntity.ok().body(questionService.generateQuestion(dictionaryId));
-    }
-
-    @GetMapping("/generate-reversed")
-    public ResponseEntity<QuestionDto> generateReversedQuestion(@RequestParam BigInteger dictionaryId) {
-        return ResponseEntity.ok().body(questionService.generateReversedQuestion(dictionaryId));
+    @GetMapping
+    public ResponseEntity<QuestionGetResponseDto> generateQuestion(@RequestParam(required = true) @Valid BigInteger dictionaryId, @RequestParam(required = false, defaultValue = "normal") String type) {
+        return ResponseEntity.ok().body(questionService.generateQuestion(dictionaryId, type));
     }
 }

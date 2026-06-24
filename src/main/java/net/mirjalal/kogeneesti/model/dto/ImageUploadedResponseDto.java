@@ -2,8 +2,10 @@ package net.mirjalal.kogeneesti.model.dto;
 
 import java.math.BigInteger;
 
-public record DictionaryGetDto (
+import net.mirjalal.kogeneesti.enums.ImageType;
+
+public record ImageUploadedResponseDto(
     BigInteger id,
     String name,
-    Integer wordCount
+    ImageType imageType
 ) {}

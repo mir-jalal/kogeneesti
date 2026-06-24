@@ -1,59 +1,148 @@
 ---
 databaseChangeLog:
-  - changeSet:
-      id: "0"
-      author: "mirjalal"
-      sql:
-        - CREATE SCHEMA IF NOT EXISTS public;
-  - changeSet:
-      id: "1"
-      author: "mirjalal"
-      changes:
-        - createTable:
-            schemaName: public
-            tableName: dictionaries
-            columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: name
-                  type: VARCHAR
-  - changeSet:
-      id: "2"
-      author: "mirjalal"
-      changes:
-        - createTable:
-            schemaName: public
-            tableName: words
-            columns:
-              - column:
-                  name: id
-                  type: BIGINT
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: word
-                  type: VARCHAR
-              - column:
-                  name: translation
-                  type: VARCHAR
-              - column:
-                  name: dictionary_id
-                  type: BIGINT
-                  constraints:
-                    nullable: false
-        - addForeignKeyConstraint:
-            constraintName: fk_word_dictionary
-            baseTableSchemaName: public
-            baseTableName: words
-            baseColumnNames: dictionary_id
-            referencedTableSchemaName: public
-            referencedTableName: dictionaries
-            referencedColumnNames: id
+    - changeSet:
+        id: "0"
+        author: "mirjalal"
+        sql:
+            - CREATE SCHEMA IF NOT EXISTS public;
+    - changeSet:
+        id: "1"
+        author: "mirjalal"
+        changes:
+            - createTable:
+                schemaName: public
+                tableName: dictionaries
+                columns:
+                - column:
+                    name: id
+                    type: BIGINT
+                    autoIncrement: true
+                    constraints:
+                        primaryKey: true
+                        nullable: false
+                - column:
+                    name: name
+                    type: VARCHAR
+    - changeSet:
+        id: "2"
+        author: "mirjalal"
+        changes:
+            - createTable:
+                schemaName: public
+                tableName: words
+                columns:
+                - column:
+                    name: id
+                    type: BIGINT
+                    autoIncrement: true
+                    constraints:
+                        primaryKey: true
+                        nullable: false
+                - column:
+                    name: word
+                    type: VARCHAR
+                - column:
+                    name: translation
+                    type: VARCHAR
+                - column:
+                    name: dictionary_id
+                    type: BIGINT
+                    constraints:
+                        nullable: false
+            - addForeignKeyConstraint:
+                constraintName: fk_word_dictionary
+                baseTableSchemaName: public
+                baseTableName: words
+                baseColumnNames: dictionary_id
+                referencedTableSchemaName: public
+                referencedTableName: dictionaries
+                referencedColumnNames: id
+    - changeSet:
+        id: "3"
+        author: "mirjalal"
+        changes:
+            - createTable:
+                schemaName: public
+                tableName: quizzes
+                columns:
+                - column:
+                    name: id
+                    type: BIGINT
+                    autoIncrement: true
+                    constraints:
+                        primaryKey: true
+                        nullable: false
+                - column:
+                    name: name
+                    type: VARCHAR
+            - createTable:
+                schemaName: public
+                tableName: questions
+                columns:
+                - column:
+                    name: id
+                    type: BIGINT
+                    autoIncrement: true
+                    constraints:
+                        primaryKey: true
+                        nullable: false
+                - column:
+                    name: type
+                    type: VARCHAR
+                    constraints:
+                        nullable: false
+                - column:
+                    name: question
+                    type: VARCHAR
+                - column:
+                    name: quiz_id
+                    type: BIGINT
+                    constraints:
+                        nullable: false
+            - createTable:
+                schemaName: public
+                tableName: answers
+                columns:
+                - column:
+                    name: id
+                    type: BIGINT
+                    autoIncrement: true
+                    constraints:
+                        primaryKey: true
+                        nullable: false
+                - column:
+                    name: type
+                    type: VARCHAR
+                - column:
+                    name: answer
+                    type: VARCHAR
+                - column:
+                    name: correct
+                    type: BOOLEAN
+                    constraints:
+                        nullable: false
+                - column:
+                    name: question_id
+                    type: BIGINT
+                    constraints:
+                        nullable: false
+            - addDefaultValue:
+                columnName: correct
+                defaultValueBoolean: false
+                tableName: answers
+            - addForeignKeyConstraint:
+                constraintName: fk_question_quiz
+                baseTableSchemaName: public
+                baseTableName: questions
+                baseColumnNames: quiz_id
+                referencedTableSchemaName: public
+                referencedTableName: quizzes
+                referencedColumnNames: id
+            - addForeignKeyConstraint:
+                constraintName: fk_answer_question
+                baseTableSchemaName: public
+                baseTableName: answers
+                baseColumnNames: question_id
+                referencedTableSchemaName: public
+                referencedTableName: questions
+                referencedColumnNames: id            

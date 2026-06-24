@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "app.storage.location",
+    "type": "java.lang.String",
+    "description": "A description for 'app.storage.location'"
+  },
+  {
+    "name": "app.cors.allowed-origins",
+    "type": "java.lang.String",
+    "description": "A description for 'app.cors.allowed-origins'"
+  },
+  {
+    "name": "app.cors.allowed-methods",
+    "type": "java.lang.String",
+    "description": "A description for 'app.cors.allowed-methods'"
+  },
+  {
+    "name": "app.cors.allowed-headers",
+    "type": "java.lang.String",
+    "description": "A description for 'app.cors.allowed-headers'"
+  }
+]}

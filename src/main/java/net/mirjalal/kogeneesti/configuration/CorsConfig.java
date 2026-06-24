@@ -1,25 +1,29 @@
 package net.mirjalal.kogeneesti.configuration;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
-public class CorsConfig {
+import net.mirjalal.kogeneesti.properties.CorsProperties;
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")  // apply to all endpoints
-                        .allowedOrigins("http://192.168.1.200:5173")
-                        // .allowedOrigins("https://mirjalal.net")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
-            }
-        };
+@Configuration
+@EnableConfigurationProperties(CorsProperties.class)
+public class CorsConfig implements WebMvcConfigurer{
+
+    private final CorsProperties corsProperties;
+
+    public CorsConfig(CorsProperties corsProperties) {
+        this.corsProperties = corsProperties;
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")  // apply to all endpoints
+                .allowedOrigins(corsProperties.allowedOrigins())
+                // .allowedOrigins("https://mirjalal.net")
+                .allowedMethods(corsProperties.allowedMethods())
+                .allowedHeaders(corsProperties.allowedHeaders())
+                .allowCredentials(true);
     }
 }
