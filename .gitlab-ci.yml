@@ -41,8 +41,11 @@ build:kogeneesti:
   artifacts:
     name: build-artifacts-$CI_COMMIT_REF_SLUG
     paths:
+      - build/test-results/test
       - build/libs/kogeneesti-*.jar
     expire_in: 30 days
+    reports:
+      junit: build/test-results/test/TEST-*.xml
 
 deploy:kogeneesti:
   stage: deploy
