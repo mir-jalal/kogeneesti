@@ -10,3 +10,12 @@
   export CONTAINER_PORT={{ .Values.service.port }}
   kubectl --namespace {{ .Release.Namespace }} port-forward $POD_NAME 8080:$CONTAINER_PORT
 {{- end }}
+
+{{- if .Values.frontend.enabled }}
+
+Frontend service is available as:
+  {{ include "kogeneesti.fullname" . }}-frontend:{{ .Values.frontend.service.port }}
+
+For local access:
+  kubectl --namespace {{ .Release.Namespace }} port-forward service/{{ include "kogeneesti.fullname" . }}-frontend 5173:{{ .Values.frontend.service.port }}
+{{- end }}

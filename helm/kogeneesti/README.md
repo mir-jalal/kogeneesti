@@ -1,6 +1,6 @@
 # Kogeneesti Helm Chart
 
-This chart deploys the Kogeneesti backend service.
+This chart deploys the Kogeneesti backend and frontend services.
 
 ## Install
 
@@ -40,4 +40,20 @@ helm upgrade --install kogeneesti ./helm/kogeneesti \
   --namespace kogeneesti --create-namespace \
   --set persistence.enabled=true \
   --set persistence.size=10Gi
+```
+
+- Disable frontend deployment:
+
+```bash
+helm upgrade --install kogeneesti ./helm/kogeneesti \
+  --namespace kogeneesti --create-namespace \
+  --set frontend.enabled=false
+```
+
+- Set frontend image tag:
+
+```bash
+helm upgrade --install kogeneesti ./helm/kogeneesti \
+  --namespace kogeneesti --create-namespace \
+  --set frontend.image.tag=latest
 ```

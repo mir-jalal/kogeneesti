@@ -76,3 +76,29 @@ persistence:
     - ReadWriteOnce
   size: 5Gi
   mountPath: /var/lib/kogeneesti/images
+
+frontend:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: mirjalalhashimli/kogeneesti-front
+    pullPolicy: IfNotPresent
+    tag: "0.0.2"
+  service:
+    type: ClusterIP
+    port: 5173
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+  livenessProbe:
+    tcpSocket:
+      port: http
+  readinessProbe:
+    tcpSocket:
+      port: http
+  env:
+    apiBaseUrl: https://mirjalal.net/api
