@@ -1,0 +1,53 @@
+---
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+test:kogeneesti:
+  stage: test
+  image: eclipse-temurin:25-jdk-alpine
+  script:
+    - ./gradlew test
+  artifacts:
+    name: test-results-$CI_COMMIT_REF_SLUG
+    paths:
+      - build/test-results/test
+    when: always
+    expire_in: 30 days
+    reports:
+      junit: build/test-results/test/TEST-*.xml
+
+build:kogeneesti:
+  stage: build
+  image: eclipse-temurin:25-jdk-alpine
+  script:
+    - ./gradlew build
+  artifacts:
+    name: build-artifacts-$CI_COMMIT_REF_SLUG
+    paths:
+      - build/libs/kogeneesti-*.jar
+    expire_in: 30 days
+
+deploy:kogeneesti:
+  stage: deploy
+  image: docker:24.0.2
+  tags:
+    - docker
+  services:
+    - alias: docker
+      name: docker:24.0.2-dind
+      command: ["--tls=false", "--host=tcp://0.0.0.0:2375"]
+      variables:
+        HEALTHCHECK_TCP_PORT: "2375"
+
+  script:
+    - mkdir -p ~/.docker
+    - cp $DOCKER_AUTH_CONFIG ~/.docker/config.json
+    - docker build -t mirjalalhashimli/kogeneesti:0.0.2 -f Dockerfile .
+    - docker push mirjalalhashimli/kogeneesti:0.0.2
