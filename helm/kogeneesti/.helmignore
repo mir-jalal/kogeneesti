@@ -1,0 +1,8 @@
+# Patterns to ignore when packaging Helm charts.
+.git/
+.gitignore
+.vscode/
+*.swp
+*.tmp
+*.bak
+.DS_Store

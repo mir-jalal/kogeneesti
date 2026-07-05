@@ -1,0 +1,78 @@
+replicaCount: 1
+
+image:
+  repository: mirjalalhashimli/kogeneesti
+  pullPolicy: IfNotPresent
+  tag: "0.0.2"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  limits:
+    cpu: "1"
+    memory: 512Mi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
+livenessProbe:
+  tcpSocket:
+    port: http
+readinessProbe:
+  tcpSocket:
+    port: http
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+
+volumes: []
+volumeMounts: []
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+env:
+  jdbcUrl: jdbc:postgresql://postgresql.default.svc.cluster.local:5432/kogeneesti
+  dbUsername: postgres
+  corsAllowedOrigins: http://localhost:8080
+  corsAllowedMethods: GET,POST,PUT,DELETE,OPTIONS
+  corsAllowedHeaders: "*"
+  storageLocation: /var/lib/kogeneesti/images
+
+secret:
+  create: true
+  existingSecret: ""
+  dbPassword: change-me
+
+persistence:
+  enabled: false
+  storageClass: ""
+  accessModes:
+    - ReadWriteOnce
+  size: 5Gi
+  mountPath: /var/lib/kogeneesti/images
