@@ -32,9 +32,13 @@ public class ImageServiceImpl implements ImageService {
             List<ImageUploadHandler> handlers) {
 
         this.storage = storage;
+        if(handlers == null || handlers.isEmpty()) {
+            throw new IllegalArgumentException("ImageUploadHandlers list cannot be null or empty");
+        }
+
         this.imageUploadHandlers = handlers.stream()
                 .collect(Collectors.toMap(
-                        ImageUploadHandler::getImageType,
+                        handler -> handler.getImageType(),
                         Function.identity()
                 ));
     }

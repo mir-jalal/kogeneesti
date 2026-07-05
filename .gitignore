@@ -40,3 +40,4 @@ out/
 
 images/
 .env
+docker-compose.yml
